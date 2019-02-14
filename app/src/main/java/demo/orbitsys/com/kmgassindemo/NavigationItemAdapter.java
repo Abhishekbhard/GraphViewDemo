@@ -38,6 +38,11 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         implements InitializeDrawerLayout {
 
 
+    public interface ILoadChart {
+        void loadChart(String chartType);
+    }
+
+
     private static final String TAG = "NavigationItemAdapter";
 
     public static List<LinearLayout> menuOptionView;
@@ -50,19 +55,23 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
     AppCompatActivity instanceBaseActivity;
     private SharedPreferences preferences;
     private long File_DownloadId;
+    private static ILoadChart iLoadChart;
 
 
     public NavigationItemAdapter(List<String> customMenu, Context context) {
 
         this.customMenu = customMenu;
         this.context = context;
-
-
         menuOptionView = new ArrayList<>();
     }
 
     public NavigationItemAdapter() {
 
+    }
+
+    public void setiLoadChart(ILoadChart iLoadChart) {
+
+        this.iLoadChart = iLoadChart;
     }
 
     @Override
@@ -78,24 +87,11 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
     public void onBindViewHolder(final MenuAdapterViewHolder holder, final int position) {
 
         holder.item_text.setText(customMenu.get(position));
-       /* if(HomeScreen.fileCompleteDownloadFlag){
-            holder.mainLayout.setAlpha(1f);
-        }
-*/
-       /* holder.item_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Toast.makeText(context, "Option selected", Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
         if (currentMenuOptionClicked != null) {
             if (customMenu.get(position).equalsIgnoreCase(currentMenuOptionClicked)) {
-                // to set first option selected and change text color
-                //dataSheetOptionView.get(position).setBackgroundColor((ContextCompat.getColor(context, ResourceBasedOnBrand.getResourceColor(context))));
+
                 holder.navArrowIcon.setVisibility(View.VISIBLE);
-                // ends here
             }
         }
         holder.mainLayout.setOnClickListener(view -> changeLayoutColor(holder.mainLayout, holder.navArrowIcon, position));
@@ -106,46 +102,38 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         switch (pos) {
 
             case 0:
-                Intent intent=new Intent(context,MainActivity.class);
-                intent.putExtra("calledBy","bar_chart");
-                context.startActivity(intent);
+
+                call("line");
+
                 drawerLayout.closeDrawers();
                 break;
 
 
             case 1:
+                call("pie");
                 drawerLayout.closeDrawers();
-
                 break;
 
             case 2:
-
-
+                call("barwithpolyLine");
                 drawerLayout.closeDrawers();
                 break;
 
             case 3:
-
-
-                break;
-
+                call("barMultiDataSet");
             case 4:
-
-                drawerLayout.closeDrawers();
-                break;
-
             case 5:
-
+                call("radar");
                 drawerLayout.closeDrawers();
                 break;
+
+
 
             case 6:
 
                 drawerLayout.closeDrawers();
 
-                    break;
-
-
+                break;
 
 
             case 7:
@@ -163,20 +151,26 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         }
     }
 
+    private void call(String type)
+    {
+        Log.e(TAG, "call: "+iLoadChart + "  "+type );
+        if (iLoadChart != null) {
+            iLoadChart.loadChart(type);
+        }
+    }
+
+
     public void changeLayoutColor(LinearLayout linearLayout, ImageView navArrow, int position) {
 
-        //  Toast.makeText(context, "Clicked On Item " + String.valueOf(position), Toast.LENGTH_SHORT).show();
 
         for (int i = 0; i < menuOptionView.size(); i++) {
             if (linearLayout.hashCode() == menuOptionView.get(i).hashCode()) {
-                //linearLayout.setBackgroundColor((ContextCompat.getColor(context, ResourceBasedOnBrand.getResourceColor(context))));
-                // textView.setTextColor((ContextCompat.getColor(context, R.color.white))); // to change selected option text to white
+
 
 
             } else if (linearLayout.hashCode() != menuOptionView.get(i).hashCode()) {
 
                 LinearLayout layout = menuOptionView.get(i);
-
 
 
             }
@@ -195,10 +189,6 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         NavigationItemAdapter.drawerLayout = drawerLayout;
 
     }
-
-
-
-
 
 
     public static class MenuAdapterViewHolder extends RecyclerView.ViewHolder {

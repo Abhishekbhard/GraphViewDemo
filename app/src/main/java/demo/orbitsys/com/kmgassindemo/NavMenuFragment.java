@@ -1,5 +1,6 @@
 package demo.orbitsys.com.kmgassindemo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -15,9 +16,10 @@ import java.util.List;
 import demo.orbitsys.com.kmgassindemo.util.InitializeDrawerLayout;
 
 public class NavMenuFragment extends Fragment implements InitializeDrawerLayout {
-     static DrawerLayout drawerLayout;
-    RecyclerView recycerview_navItem;
-    List<String> customNavItem = new ArrayList<>();
+    private static DrawerLayout drawerLayout;
+    private RecyclerView recycerview_navItem;
+    private List<String> customNavItem = new ArrayList<>();
+    private Context context;
 
     public NavMenuFragment() {
     }
@@ -28,13 +30,13 @@ public class NavMenuFragment extends Fragment implements InitializeDrawerLayout 
         super.onCreate(savedInstanceState);
 
 
-        // TODO confirm Knowledge base spelling
-        customNavItem.add("Image1");
-        customNavItem.add("Image2");
-        customNavItem.add("Image3");
-        customNavItem.add("Image4");
-        customNavItem.add("Image5");
-        customNavItem.add("Image6");
+        customNavItem.add("Avg Cost Per Claim");
+        customNavItem.add("Customer Satisfaction");
+        customNavItem.add("Claims Ratio");
+        customNavItem.add("Top Brokers");
+        customNavItem.add("Avg. Time to Settle");
+        customNavItem.add("Policy sales Growth");
+
 
     }
 
@@ -56,7 +58,9 @@ public class NavMenuFragment extends Fragment implements InitializeDrawerLayout 
     private void setNavItemAdapter() {
         recycerview_navItem.setLayoutManager(new LinearLayoutManager(getActivity()));
         NavigationItemAdapter adapter = new NavigationItemAdapter(customNavItem, getActivity());
+        adapter.setiLoadChart((NavigationItemAdapter.ILoadChart) context);
         recycerview_navItem.setAdapter(adapter);
+
     }
 
     @Override
@@ -70,4 +74,10 @@ public class NavMenuFragment extends Fragment implements InitializeDrawerLayout 
         return view;
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 }

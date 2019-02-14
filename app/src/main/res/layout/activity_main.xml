@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
+
     <LinearLayout
         android:id="@+id/nav_linear_layout"
         android:layout_width="400dp"
@@ -20,149 +21,148 @@
 
         </FrameLayout>
     </LinearLayout>
+
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/ivNav"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/ic_nav"
-
-        />
-    <LinearLayout
-        android:layout_below="@id/ivNav"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="3"
+        android:layout_height="match_parent">
 
-        >
-    <LinearLayout
-        android:id="@+id/top"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="1dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/ivNav"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_nav"
 
-
-        <FrameLayout
-                android:id="@+id/topleft"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="1dp"
-            android:layout_marginStart="1dp"
-            android:layout_weight=".5"
-            android:background="@drawable/shape"
-            android:orientation="horizontal">
-
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/topright"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".5"
-            android:background="@drawable/shape"
-            android:orientation="horizontal">
-
-
-        </FrameLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="1dp"
-        android:layout_weight="1"
-
-        android:orientation="horizontal">
-
-
-        <FrameLayout
-            android:id="@+id/centerLeft"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="1dp"
-            android:layout_weight=".5"
-            android:background="@drawable/shape"
-            android:orientation="horizontal">
-
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/centerRight"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
-            android:layout_weight=".5"
-            android:background="@drawable/shape"
-            android:orientation="horizontal">
-
-
-        </FrameLayout>
-
-    </LinearLayout>
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="1dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ivNav"
+            android:orientation="vertical"
+            android:weightSum="3"
 
-            android:orientation="horizontal">
+            >
 
-
-            <FrameLayout
-                android:id="@+id/bottomleft"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="1dp"
-                android:layout_weight=".5"
-                android:background="@drawable/shape"
+            <LinearLayout
+                android:id="@+id/top"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/topleft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/shape"
+                    android:orientation="horizontal">
 
-            <FrameLayout
-                android:id="@+id/bottomright"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="1dp"
-                android:layout_weight=".5"
-                android:background="@drawable/shape"
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/topright"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@drawable/shape"
+                    android:orientation="horizontal">
+
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+
                 android:orientation="horizontal">
 
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/centerLeft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/shape"
+                    android:orientation="horizontal">
 
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/centerRight"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/shape"
+                    android:orientation="horizontal">
+
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+
+                android:orientation="horizontal">
+
+
+                <FrameLayout
+                    android:id="@+id/bottomleft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/shape"
+                    android:orientation="horizontal">
+
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/bottomright"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/shape"
+                    android:orientation="horizontal">
+
+
+                </FrameLayout>
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
 
-<RelativeLayout
-    android:id="@+id/overlayFragment"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
+        <RelativeLayout
+            android:id="@+id/overlaylayout"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_centerInParent="true"
 
-    >
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chart1"
-        android:clickable="false"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+            >
 
-        />
 
-</RelativeLayout>
 
-</RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>
