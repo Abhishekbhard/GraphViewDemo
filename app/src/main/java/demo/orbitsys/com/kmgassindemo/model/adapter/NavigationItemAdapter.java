@@ -1,15 +1,8 @@
-package demo.orbitsys.com.kmgassindemo;
+package demo.orbitsys.com.kmgassindemo.model.adapter;
 
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -22,17 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import demo.orbitsys.com.kmgassindemo.R;
 import demo.orbitsys.com.kmgassindemo.util.InitializeDrawerLayout;
-
-import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAdapter.MenuAdapterViewHolder>
         implements InitializeDrawerLayout {
@@ -121,30 +108,17 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
 
             case 3:
                 call("barMultiDataSet");
+                break;
             case 4:
+                call("horizontalBarChart");
+                break;
             case 5:
-                call("radar");
+                call("harlfPichart");
                 drawerLayout.closeDrawers();
                 break;
 
 
 
-            case 6:
-
-                drawerLayout.closeDrawers();
-
-                break;
-
-
-            case 7:
-
-                drawerLayout.closeDrawers();
-                break;
-
-            case 8:
-
-                drawerLayout.closeDrawers();
-                break;
 
             default:
                 break;

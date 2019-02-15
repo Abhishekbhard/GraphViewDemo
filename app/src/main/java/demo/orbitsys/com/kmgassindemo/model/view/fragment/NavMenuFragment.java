@@ -1,4 +1,4 @@
-package demo.orbitsys.com.kmgassindemo;
+package demo.orbitsys.com.kmgassindemo.model.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import demo.orbitsys.com.kmgassindemo.model.adapter.NavigationItemAdapter;
+import demo.orbitsys.com.kmgassindemo.R;
 import demo.orbitsys.com.kmgassindemo.util.InitializeDrawerLayout;
 
 public class NavMenuFragment extends Fragment implements InitializeDrawerLayout {
@@ -28,8 +30,6 @@ public class NavMenuFragment extends Fragment implements InitializeDrawerLayout 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         customNavItem.add("Avg Cost Per Claim");
         customNavItem.add("Customer Satisfaction");
         customNavItem.add("Claims Ratio");

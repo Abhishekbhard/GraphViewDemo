@@ -1,7 +1,6 @@
-package demo.orbitsys.com.kmgassindemo;
+package demo.orbitsys.com.kmgassindemo.model.view.activity;
 
 import android.content.ClipData;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,11 +25,9 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -43,27 +40,21 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import demo.orbitsys.com.kmgassindemo.model.view.fragment.NavMenuFragment;
+import demo.orbitsys.com.kmgassindemo.model.adapter.NavigationItemAdapter;
+import demo.orbitsys.com.kmgassindemo.R;
 import demo.orbitsys.com.kmgassindemo.util.ApplicationController;
 import demo.orbitsys.com.kmgassindemo.util.DayAxisValueFormatter;
 import demo.orbitsys.com.kmgassindemo.util.InitializeDrawerLayout;
-import demo.orbitsys.com.kmgassindemo.util.MyValueFormatter;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationItemAdapter.ILoadChart {
@@ -71,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Animation animation;
     DrawerLayout drawerLayout;
     private LinearLayout nav_linear_layout;
-    String calledBy = "";
-    FrameLayout frameLayout;
     private static final String TAG = "MainActivity";
     private int CONTAIER_SIZE = 6;
     private final int count = 12;
@@ -96,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         loadDrawerContent();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApplicationController.setFullScreen(this);
 
     }
 
@@ -157,12 +153,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (chartType) {
                 case "line":
                     setLineData(20, 100);
-
                     break;
 
                 case "barwithpolyLine":
                     setBarData();
-
                     break;
 
                 case "pie":
@@ -172,8 +166,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case "barMultiDataSet":
                     setMultiDataSet();
                     break;
+                case "horizontalBarChart":
+                    setHorizontalBarChart();
+                    break;
+                case "harlfPichart":
+                    setHalfPi();
+                    break;
             }
-            CONTAIER_SIZE--;
         }
 
 
@@ -239,11 +238,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     params.height = container.getHeight();
 
                     view.setLayoutParams(params);
-
                     if (container.getChildCount() < 1) {
                         container.addView(view);
                         view.setOnTouchListener(null);
                         view.setVisibility(View.VISIBLE);
+                        CONTAIER_SIZE--;
+
                     }
 
                     break;
@@ -274,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         chart.setLayoutParams(params);
         chartContainer.addView(chart);
+        chart.animateX(500);
+
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0f);
@@ -545,69 +547,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void setRadarData() {
-
-        RadarChart chart = new RadarChart(MainActivity.this);
-        chart.setTouchEnabled(false);
-        chart.setOnTouchListener(new MyTouchListener());
-
-        RelativeLayout chartContainer = findViewById(R.id.overlaylayout);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        chart.setLayoutParams(params);
-        chartContainer.addView(chart);
-
-
-        float mul = 80;
-        float min = 20;
-        int cnt = 5;
-
-        ArrayList<RadarEntry> entries1 = new ArrayList<>();
-        ArrayList<RadarEntry> entries2 = new ArrayList<>();
-
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < cnt; i++) {
-            float val1 = (float) (Math.random() * mul) + min;
-            entries1.add(new RadarEntry(val1));
-
-            float val2 = (float) (Math.random() * mul) + min;
-            entries2.add(new RadarEntry(val2));
-        }
-
-        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
-        set1.setColor(Color.rgb(103, 110, 129));
-        set1.setFillColor(Color.rgb(103, 110, 129));
-        set1.setDrawFilled(true);
-        set1.setFillAlpha(180);
-        set1.setLineWidth(2f);
-        set1.setDrawHighlightCircleEnabled(true);
-        set1.setDrawHighlightIndicators(false);
-
-        RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
-        set2.setColor(Color.rgb(121, 162, 175));
-        set2.setFillColor(Color.rgb(121, 162, 175));
-        set2.setDrawFilled(true);
-        set2.setFillAlpha(180);
-        set2.setLineWidth(2f);
-        set2.setDrawHighlightCircleEnabled(true);
-        set2.setDrawHighlightIndicators(false);
-
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-        sets.add(set1);
-        sets.add(set2);
-
-        RadarData data = new RadarData(sets);
-
-        data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
-
-        chart.setData(data);
-        chart.invalidate();
-
-
-    }
 
     protected float getRandom(float range, float start) {
         return (float) (Math.random() * range) + start;
@@ -628,46 +567,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         barChart.setLayoutParams(params);
         chartContainer.addView(barChart);
+        barChart.animateX(500);
+
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         ArrayList<BarEntry> barEntries1 = new ArrayList<>();
         ArrayList<BarEntry> barEntries2 = new ArrayList<>();
 
-        barEntries.add(new BarEntry(0,98.21f));
-        barEntries.add(new BarEntry(1,420.22f));
-        barEntries.add(new BarEntry(2,758));
-        barEntries.add(new BarEntry(3,307.97f));
-        barEntries.add(new BarEntry(4,1000.96f));
-        barEntries.add(new BarEntry(5,400.4f));
-        barEntries.add(new BarEntry(6,588.58f));
+        barEntries.add(new BarEntry(0, 98.21f));
+        barEntries.add(new BarEntry(1, 420.22f));
+        barEntries.add(new BarEntry(2, 758));
+        barEntries.add(new BarEntry(3, 307.97f));
+        barEntries.add(new BarEntry(4, 1000.96f));
+        barEntries.add(new BarEntry(5, 400.4f));
+        barEntries.add(new BarEntry(6, 588.58f));
 
-        barEntries1.add(new BarEntry(0,250));
-        barEntries1.add(new BarEntry(1,791));
-        barEntries1.add(new BarEntry(2,630));
-        barEntries1.add(new BarEntry(3,782));
-        barEntries1.add(new BarEntry(4,271.54f));
-        barEntries1.add(new BarEntry(5,500));
-        barEntries1.add(new BarEntry(6,217.36f));
+        barEntries1.add(new BarEntry(0, 250));
+        barEntries1.add(new BarEntry(1, 791));
+        barEntries1.add(new BarEntry(2, 630));
+        barEntries1.add(new BarEntry(3, 782));
+        barEntries1.add(new BarEntry(4, 271.54f));
+        barEntries1.add(new BarEntry(5, 500));
+        barEntries1.add(new BarEntry(6, 217.36f));
 
-        barEntries2.add(new BarEntry(0,900));
-        barEntries2.add(new BarEntry(1,691));
-        barEntries2.add(new BarEntry(2,103));
-        barEntries2.add(new BarEntry(3,382));
-        barEntries2.add(new BarEntry(4,271f));
-        barEntries2.add(new BarEntry(5,500));
-        barEntries2.add(new BarEntry(6,117f));
+        barEntries2.add(new BarEntry(0, 900));
+        barEntries2.add(new BarEntry(1, 691));
+        barEntries2.add(new BarEntry(2, 103));
+        barEntries2.add(new BarEntry(3, 382));
+        barEntries2.add(new BarEntry(4, 271f));
+        barEntries2.add(new BarEntry(5, 500));
+        barEntries2.add(new BarEntry(6, 117f));
 
 
-
-        BarDataSet barDataSet = new BarDataSet(barEntries,"DATA SET 1");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "DATA SET 1");
         barDataSet.setColor(Color.parseColor("#F44336"));
-        BarDataSet barDataSet1 = new BarDataSet(barEntries1,"DATA SET 2");
+        BarDataSet barDataSet1 = new BarDataSet(barEntries1, "DATA SET 2");
         barDataSet1.setColors(Color.parseColor("#9C27B0"));
-        BarDataSet barDataSet2 = new BarDataSet(barEntries2,"DATA SET 3");
+        BarDataSet barDataSet2 = new BarDataSet(barEntries2, "DATA SET 3");
         barDataSet1.setColors(Color.parseColor("#e241f4"));
 
 
-        String[] months = new String[] {"Jan", "Feb", "Mar", "Apr","May","Jun"};
-        BarData data = new BarData(barDataSet,barDataSet1,barDataSet2);
+        String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun"};
+        BarData data = new BarData(barDataSet, barDataSet1, barDataSet2);
         barChart.setData(data);
 
         XAxis xAxis = barChart.getXAxis();
@@ -687,6 +627,113 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         barChart.getXAxis().setAxisMaximum(0 + barChart.getBarData().getGroupWidth(groupSpace, barSpace) * 5);
         barChart.groupBars(0, groupSpace, barSpace);
 
+    }
+
+    private void setHorizontalBarChart() {
+        HorizontalBarChart barChart = new HorizontalBarChart(this);
+        barChart.getDescription().setEnabled(false);
+        barChart.setBackgroundColor(Color.WHITE);
+        barChart.setDrawGridBackground(false);
+        barChart.setDrawBarShadow(false);
+        barChart.setHighlightFullBarEnabled(false);
+        barChart.setOnTouchListener(new MyTouchListener());
+
+        RelativeLayout chartContainer = findViewById(R.id.overlaylayout);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+
+        barChart.setLayoutParams(params);
+        chartContainer.addView(barChart);
+        barChart.animateX(500);
+        XAxis xl = barChart.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(false);
+        float barWidth = 9f;
+        float spaceForBar = 10f;
+        ArrayList<BarEntry> values = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            float val = (float) (Math.random() * 12);
+            values.add(new BarEntry(i * spaceForBar, val
+            ));
+        }
+
+        BarDataSet set1;
+
+        if (barChart.getData() != null &&
+                barChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) barChart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            barChart.getData().notifyDataChanged();
+            barChart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(values, "DataSet 1");
+            set1.setColors(ColorTemplate.MATERIAL_COLORS);
+
+            set1.setDrawIcons(false);
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1);
+
+            BarData data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            //data.setValueTypeface(tfLight);
+            data.setBarWidth(barWidth);
+            barChart.setData(data);
+        }
+
+
+    }
+
+    private void setHalfPi() {
+        PieChart chart = new PieChart(MainActivity.this);
+        chart.setTouchEnabled(false);
+        chart.setOnTouchListener(new MyTouchListener());
+        chart.setUsePercentValues(true);
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 100, 5, 5);
+        chart.setExtraOffsets(20.f, 10.f, 20.f, 0.f);
+        chart.setDrawCenterText(true);
+        chart.setMaxAngle(180f); // HALF CHART
+        chart.setRotationAngle(180f);
+        chart.setCenterTextOffset(0, -20);
+
+
+        chart.setDragDecelerationFrictionCoef(0.95f);
+        RelativeLayout chartContainer = findViewById(R.id.overlaylayout);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        chart.setLayoutParams(params);
+        //chart.getDescription().setText("Description of my chart");
+        chart.animateX(500);
+        chartContainer.addView(chart);
+        setData(4, 100, chart);
+    }
+
+    private void setData(int count, float range, PieChart chart) {
+
+        ArrayList<PieEntry> values = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            values.add(new PieEntry((float) ((Math.random() * range) + range / 5)));
+        }
+
+        PieDataSet dataSet = new PieDataSet(values, "Election Results");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        chart.setData(data);
+
+        chart.invalidate();
     }
 
 
