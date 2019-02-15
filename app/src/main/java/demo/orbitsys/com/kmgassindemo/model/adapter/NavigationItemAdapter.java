@@ -38,10 +38,6 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
     private static DownloadManager downloadManager;
     Context context;
     List<String> customMenu;
-    AppCompatActivity activity;
-    AppCompatActivity instanceBaseActivity;
-    private SharedPreferences preferences;
-    private long File_DownloadId;
     private static ILoadChart iLoadChart;
 
 
@@ -108,9 +104,13 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
 
             case 3:
                 call("barMultiDataSet");
+                drawerLayout.closeDrawers();
+
                 break;
             case 4:
                 call("horizontalBarChart");
+                drawerLayout.closeDrawers();
+
                 break;
             case 5:
                 call("harlfPichart");

@@ -58,11 +58,12 @@ import demo.orbitsys.com.kmgassindemo.util.InitializeDrawerLayout;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationItemAdapter.ILoadChart {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
     ImageView ivNav;
     Animation animation;
     DrawerLayout drawerLayout;
     private LinearLayout nav_linear_layout;
-    private static final String TAG = "MainActivity";
     private int CONTAIER_SIZE = 6;
     private final int count = 12;
 
@@ -132,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ivNav:
                 view.startAnimation(animation);
 
-                //   setJobOverFlagForDataSheetMenu(drawerLayout);
                 if (!drawerLayout.isDrawerOpen(Gravity.LEFT)) {
                     drawerLayout.openDrawer(Gravity.LEFT);
                     nav_linear_layout.bringToFront();
@@ -171,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case "harlfPichart":
                     setHalfPi();
+                    break;
+                default:
                     break;
             }
         }
